@@ -2,20 +2,36 @@
 pragma solidity ^0.8.0;
 
 contract CampaignFactory{
+    
     Campaign[] deployedCampaigns;
     
-    function createCampaign(uint minContri) external {
-        Campaign newCampaign = new Campaign(minContri);
+    
+    function createCampaign(string memory _title, string memory _story, string memory _bannerImg, uint _minContribution, uint _goal) external {
+        Campaign newCampaign = new Campaign(_title, _story, _bannerImg, _minContribution, _goal);
         deployedCampaigns.push(newCampaign);
     }
     
-    function getDeployedCampaigns() view external returns(Campaign[] memory)
+    function getDeployedCampaignsAddr() view external returns(Campaign[] memory)
     {
         return deployedCampaigns;
+    }
+    
+    function getDeployedCampaignsDetails() view external returns(Campaign.Details[] memory)
+    {
+        Campaign.Details[] memory detailedCampaigns = new Campaign.Details[](deployedCampaigns.length);
+        
+        for(uint i = 0; i<deployedCampaigns.length; i++)
+        {
+            Campaign.Details memory temp = deployedCampaigns[i].getDetails();
+            detailedCampaigns[i] = temp;
+        }
+        
+        return detailedCampaigns;
     }
 }
 
 contract Campaign{
+    
     struct Request {
         string description;
         uint value;
@@ -24,9 +40,35 @@ contract Campaign{
         uint approvalCount;
     }
     
+    struct Update {
+        string image;
+        string text;
+    }
+    
+    struct Details{
+        string title;
+        string story;
+        string bannerImg;
+        uint goal;
+        uint funding;
+        uint minContribution;
+        address campAddr;
+        address manager;
+        uint balance;
+        Update[] updates;
+    }
+    
+    
+    string title;
+    string story;
+    uint goal;
+    uint funding;
+    Update [] updates;
+    string bannerImg;
+    
     address public manager;
     uint public minContribution;
-    mapping(address=>bool) public approvers;
+    mapping(address=>bool) approvers;
     mapping(address=>mapping(uint=>bool)) approvals; // approvals[address][i] = true means user at "address" approved Request at index "i" in requests
     uint public approversCount;
     Request[] public requests;
@@ -36,14 +78,19 @@ contract Campaign{
         _;
     }
     
-    constructor(uint _minContribution) {
+    constructor(string memory _title, string memory _story, string memory _bannerImg, uint _minContribution, uint _goal) {
         manager = tx.origin;
         minContribution = _minContribution;
+        goal = _goal;
+        title = _title;
+        story = _story;
+        bannerImg = _bannerImg;
     }
     
     function contribute() external payable{
         require(msg.value >= minContribution,"Atleast minContribution wei required to become a contributor");
         approvers[msg.sender] = true;
+        funding+=msg.value;
         approversCount++;
     }
     
@@ -57,6 +104,22 @@ contract Campaign{
         });
         
         requests.push(request);
+    }
+    
+    function addUpdate(string calldata image, string calldata text) external restricted
+    {
+        Update memory newUpdate = Update({
+            image: image,
+            text: text
+        });
+        
+        updates.push(newUpdate);
+    }
+    
+    function getDetails() view public returns(Details memory) { // title, story, bannerimg, funding, goal, updates
+        Details memory campDetails = Details(title, story, bannerImg, goal, funding, minContribution, address(this), manager, address(this).balance, updates);
+        
+        return campDetails;
     }
     
     function approveRequest(uint index) external {
