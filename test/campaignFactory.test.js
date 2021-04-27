@@ -6,12 +6,12 @@ contract('factory',async()=>{
 
     beforeEach(async()=>{
         factory = await CampaignFactory.deployed();
-        console.log("before each called")
+        // console.log("before each called")
     })
 
     it('deployed',async()=>{
         
-        console.log(factory.address);
+        // console.log(factory.address);
         assert.ok(factory.address);
     })
 
