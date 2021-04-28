@@ -58,7 +58,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -135,7 +136,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.8.1+commit.df193b15\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"contractAddr\",\"type\":\"address\"}],\"name\":\"campaignDeployed\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_title\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_story\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_bannerImg\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"_minContribution\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_goal\",\"type\":\"uint256\"}],\"name\":\"createCampaign\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getDeployedCampaignsAddr\",\"outputs\":[{\"internalType\":\"contract Campaign[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getDeployedCampaignsDetails\",\"outputs\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"title\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"story\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"bannerImg\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"goal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"funding\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minContribution\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"campAddr\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"manager\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"balance\",\"type\":\"uint256\"},{\"components\":[{\"internalType\":\"string\",\"name\":\"image\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"text\",\"type\":\"string\"}],\"internalType\":\"struct Campaign.Update[]\",\"name\":\"updates\",\"type\":\"tuple[]\"}],\"internalType\":\"struct Campaign.Details[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/shikhar/Desktop/Blockchain/initialize/contracts/CampaignFactory.sol\":\"CampaignFactory\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/shikhar/Desktop/Blockchain/initialize/contracts/Campaign.sol\":{\"keccak256\":\"0x67fc9538a5a1c04ee4c573149fcf46dc7f2b047212fa68ceb75f6d0c5fd07450\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://049d57b25eb7335221a0a0a6cfe95e799c8a63d76c702582eb032acc289445b3\",\"dweb:/ipfs/QmfXm4moF45jv91Y21TMeJ53NDTs1kVUiVgzuBaKXhzMde\"]},\"/home/shikhar/Desktop/Blockchain/initialize/contracts/CampaignFactory.sol\":{\"keccak256\":\"0x7e290f7a9aa8564a3de284d0dedb9853713d9a4a893d4a511be73d3c8bfb4c48\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://e9648f70ecb517aeaebf16491a53880baf3d61f7fb3aa03640079d613d0913c9\",\"dweb:/ipfs/QmVacTz4F62NdXuaCQzCDkBK5QdKVdyTNBphFh767K2Ly4\"]}},\"version\":1}",
@@ -15209,9 +15211,17 @@
     "name": "solc",
     "version": "0.8.1+commit.df193b15.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "5777": {
+      "events": {},
+      "links": {},
+      "address": "0x30043D9A1986a5676E6F726E6ed6E73E670154F3",
+      "transactionHash": "0x1121105a92331a1e79fe52148a8f5cabaa5682646a9990b14034e11eb6bbef9b"
+    }
+  },
   "schemaVersion": "3.3.4",
-  "updatedAt": "2021-04-28T04:02:43.890Z",
+  "updatedAt": "2021-04-28T04:11:17.600Z",
+  "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
     "methods": {},
