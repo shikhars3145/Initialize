@@ -118,7 +118,7 @@ export default function createNewCampaign() {
   };
 
   const gotoCampaign = ()=>{
-    router.push(`/${receipt.events.campaignDeployed.returnValues[0]}`);
+    router.push(`/campaigns/${receipt.events.campaignDeployed.returnValues[0]}`);
     // console.log(receipt.events.campaignDeployed.returnValues[0]);
   }
 
