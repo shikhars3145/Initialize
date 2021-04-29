@@ -18,7 +18,11 @@ const useStyles = makeStyles(theme => ({
   //     height:"100%"
   //   },
   root: {
-    maxWidth: 345,
+    maxWidth: "100%",
+    height:"100%",
+    display: 'flex', 
+    justifyContent: 'space-between', 
+    flexDirection: 'column' 
   },
   media: {
     height: 0,
@@ -27,6 +31,9 @@ const useStyles = makeStyles(theme => ({
   share: {
     marginLeft: 'auto',
   },
+  content:{
+      textAlign: "left"
+  }
 }));
 
 export default function CampaignCard({ campaign }) {
@@ -48,7 +55,7 @@ export default function CampaignCard({ campaign }) {
     <Card className={classes.root}>
       <CardHeader title={campaign[0]} />
       <CardMedia className={classes.media} image={`https://ipfs.infura.io/ipfs/${campaign[2]}`} />
-      <CardContent>
+      <CardContent className={classes.content}>
         <Typography variant='body1'>{((campaign[4] / campaign[3]) * 100).toFixed() + '%'} Funded</Typography>
         <Typography variant='body2'>
           Min. Contribution Req.: {minLengthContri}
