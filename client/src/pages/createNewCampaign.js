@@ -1,4 +1,4 @@
-import { Container, Typography, TextField, Button, Backdrop, CircularProgress } from '@material-ui/core';
+import { Container, Typography, TextField, Button, Backdrop, CircularProgress, CardMedia } from '@material-ui/core';
 import React, { useState, useRef, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import UserContext from '../contexts/user/user.context';
@@ -25,14 +25,14 @@ const useStyles = makeStyles(theme => ({
   hide: {
     display: 'none',
   },
-  image: {
-    width: '100%',
-    height: '300px',
-    display: 'block',
-    margin: '1rem auto',
-  },
   imageWrapper: {
     marginBottom: '2rem',
+    width: '100%',
+    margin: '1rem auto',
+  },
+  media: {
+    height: 0,
+    paddingTop: '56.25%', // 16:9
     width: '100%',
     margin: '1rem auto',
   },
@@ -135,7 +135,7 @@ export default function createNewCampaign() {
             Select Campaign Image
           </Typography>
 
-          <img id='preview' src={imgSrc ? imgSrc : '/image-preview.png'} className={classes.image} />
+          <CardMedia className={classes.media} image={imgSrc ? imgSrc :'/image-preview.png'} />
 
           <input
             name='img'
