@@ -10,6 +10,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import { Typography, Button } from '@material-ui/core';
 import web3 from '../utils/web3';
 import { useRouter } from 'next/router'
+import ShareBtn from './ShareBtn'
 
 
 const useStyles = makeStyles(theme => ({
@@ -63,9 +64,10 @@ export default function CampaignCard({ campaign }) {
       </CardContent>
       <CardActions disableSpacing>
         <Button onClick={gotoCampaign}>Learn More...</Button>
-        <IconButton aria-label='share' className={classes.share}>
+        <ShareBtn campAddr={campaign[6]} className={classes.share}/>
+        {/* <IconButton aria-label='share' className={classes.share}>
           <ShareIcon />
-        </IconButton>
+        </IconButton> */}
       </CardActions>
     </Card>
   );
