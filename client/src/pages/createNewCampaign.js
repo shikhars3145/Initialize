@@ -140,7 +140,7 @@ export default function createNewCampaign() {
           <input
             name='img'
             type='file'
-            accept='.png, .jpg'
+            accept='.png, .jpg, .jpeg'
             onChange={handleImage}
             className={classes.hide}
             ref={fileInputRef}
