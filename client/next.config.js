@@ -1,5 +1,5 @@
 module.exports = {
     env: {
-        DEPLOYED_NETWORK: "5777"
+        DEPLOYED_NETWORK_ID: "5777"
     }
 }

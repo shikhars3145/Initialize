@@ -6,7 +6,7 @@ const CampaignFactory = require('../abi/CampaignFactory.json');
 
 // const networkId = "5777"; // "Development/ganache"
 // const networkId = "3"; // "Ropsten"
-const networkId = process.env.DEPLOYED_NETWORK;
+const networkId = process.env.DEPLOYED_NETWORK_ID;
 console.log(networkId);
 // console.log("networkData",CampaignFactory.networks[networkId]);
 const networkData = CampaignFactory.networks[networkId];
