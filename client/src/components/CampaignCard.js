@@ -5,13 +5,10 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import IconButton from '@material-ui/core/IconButton';
-import ShareIcon from '@material-ui/icons/Share';
 import { Typography, Button } from '@material-ui/core';
-import web3 from '../utils/web3';
 import { useRouter } from 'next/router'
 import ShareBtn from './ShareBtn'
-
+import minLengthValue from '../utils/minLengthValue'
 
 const useStyles = makeStyles(theme => ({
   //   root: {
@@ -41,12 +38,7 @@ export default function CampaignCard({ campaign }) {
   const classes = useStyles();
   const router = useRouter();
 
-  const minContriWei = campaign[5] + ' wei';
-  const minContriGwei = Number(web3.utils.fromWei(`${campaign[5]}`, 'gwei')).toPrecision() + ' gwei';
-  const minContriEth = Number(web3.utils.fromWei(`${campaign[5]}`, 'ether')).toPrecision() + ' eth';
-
-  const options = [minContriWei,minContriGwei,minContriEth];
-  const minLengthContri = options.reduce((a,b)=> a.length<b.length ? a : b);
+  const minLengthContri = minLengthValue(campaign[5]);
 
   const gotoCampaign = () => {
     router.push(`/campaigns/${campaign[6]}`);
