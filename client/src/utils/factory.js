@@ -6,18 +6,25 @@ const CampaignFactory = require('../abi/CampaignFactory.json');
 
 // const networkId = "5777"; // "Development/ganache"
 // const networkId = "3"; // "Ropsten"
-const networkId = process.env.DEPLOYED_NETWORK_ID;
-console.log(networkId);
-// console.log("networkData",CampaignFactory.networks[networkId]);
-const networkData = CampaignFactory.networks[networkId];
-if(networkData){
-    factory = new web3.eth.Contract(CampaignFactory.abi,networkData.address);
+let factory;
+try{
+    const networkId = process.env.DEPLOYED_NETWORK_ID;
+    console.log(networkId);
+    // console.log("networkData",CampaignFactory.networks[networkId]);
+    const networkData = CampaignFactory.networks[networkId];
+    if(networkData){
+        factory = new web3.eth.Contract(CampaignFactory.abi,networkData.address);
+    }
+    else{
+        if(typeof alert !== 'undefined')
+            alert("Contract not deployed to current network");
+        console.log("Contract not deployed to current network");
+        throw("Contract not deployed to current network");
+    }
 }
-else{
-    if(typeof alert !== 'undefined')
-        alert("Contract not deployed to current network");
-    console.log("Contract not deployed to current network");
-    throw("Contract not deployed to current network");
+catch(err){
+    factory=false;
+    console.log("catch working");
 }
 // console.log("factory",factory);
 module.exports = factory;
