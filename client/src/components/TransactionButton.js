@@ -6,15 +6,6 @@ import UserContext from '../contexts/user/user.context';
 export default function TransactionButton({children, onClick, type,...btnProps}) {
     const {user,setUser} = useContext(UserContext);
 
-    if(typeof ethereum !== 'undefined')
-    {
-        ethereum.on('accountsChanged',(accounts)=>{
-            setUser(accounts[0]);
-        })
-
-        ethereum.on('chainChanged', (_chainId) => window.location.reload());
-    }
-
     const connectWallet =()=> {
         if(typeof ethereum !== 'undefined'){
             ethereum.request({ method: 'eth_requestAccounts' }).then(accounts=>{

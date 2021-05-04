@@ -11,6 +11,15 @@ import UserContext from '../contexts/user/user.context';
 export default function MyApp(props) {
   const { Component, pageProps } = props;
   const [user, setUser] = useState(null);
+  
+  if(typeof ethereum !== 'undefined')
+    {
+        ethereum.on('accountsChanged',(accounts)=>{
+            setUser(accounts[0]);
+        })
+
+        ethereum.on('chainChanged', (_chainId) => window.location.reload());
+    }
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
