@@ -34,7 +34,7 @@ contract Campaign{
     string story;
     uint goal;
     uint funding;
-    Update [] updates;
+    Update [] public updates;
     string bannerImg;
     
     address public manager;
@@ -60,9 +60,9 @@ contract Campaign{
     
     function contribute() external payable{
         require(msg.value >= minContribution,"Atleast minContribution wei required to become a contributor");
+        if(!approvers[msg.sender]) approversCount++;
         approvers[msg.sender] = true;
         funding+=msg.value;
-        approversCount++;
     }
     
     function createRequest(string calldata description, uint value, address payable recipient) public restricted {
@@ -92,6 +92,14 @@ contract Campaign{
         
         return campDetails;
     }
+
+    function getUpdates() view external returns(Update[] memory) {
+        return updates;
+    }
+
+    function getRequests() view external returns(Request[] memory) {
+        return requests;
+    }
     
     function approveRequest(uint index) external {
         
@@ -106,7 +114,7 @@ contract Campaign{
         Request storage request = requests[index]; // request is reference to requests[index]
         require(!request.complete,"Request already finalised");
         require(request.approvalCount > (approversCount/2), "Majority didnt approved the request, cant finalise");
-        
+        require(request.value<=address(this).balance, "Not enough balance to finalize request");
         request.recipient.transfer(request.value);
         request.complete = true;
     }
