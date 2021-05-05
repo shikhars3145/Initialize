@@ -74,13 +74,13 @@ export default function UpdatesSection({ manager, address }) {
   const [updates, setUpdates] = useState([]);
 
   useEffect(() => {
-    if (user && manager.toLowerCase() == user.toLowerCase()) {
+    if (user && manager == user) {
       setIsAdmin(true);
-      console.log('true');
+      // console.log(user,manager);
     } else {
       setIsAdmin(false);
-      console.log(manager, user);
-      console.log('false');
+      // console.log(manager, user);
+      // console.log('false');
     }
   }, [user]);
 
