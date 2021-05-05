@@ -6,16 +6,17 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../themes/theme';
 import Navbar from '../components/Navbar';
 import UserContext from '../contexts/user/user.context';
+import web3 from '../utils/web3';
 
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
   const [user, setUser] = useState(null);
-  
+
   if(typeof ethereum !== 'undefined')
     {
         ethereum.on('accountsChanged',(accounts)=>{
-            setUser(accounts[0]);
+            setUser(web3.utils.toChecksumAddress(accounts[0]));
         })
 
         ethereum.on('chainChanged', (_chainId) => window.location.reload());
