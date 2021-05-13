@@ -1,4 +1,4 @@
-import { Container, Typography } from '@material-ui/core';
+import { Button, Container, Typography } from '@material-ui/core';
 import React from 'react';
 import { useRouter } from 'next/router'
 import TransactionButton from './TransactionButton';
@@ -42,7 +42,7 @@ export default function Hero() {
                 for taking out funds from the campain, and each request is voted upon 
                 by the contributors giving contributors control over how funds are spent.
             </Typography>
-            <TransactionButton className={classes.btn} size="large" color="primary" variant="contained" onClick={redirectToCreate}>Create A Campaign</TransactionButton>
+            <Button className={classes.btn} size="large" color="primary" variant="contained" onClick={redirectToCreate}>Create A Campaign</Button>
         </Container>
     )
 }
