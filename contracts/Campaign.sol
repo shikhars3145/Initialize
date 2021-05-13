@@ -40,7 +40,7 @@ contract Campaign{
     address public manager;
     uint public minContribution;
     mapping(address=>bool) public approvers;
-    mapping(address=>mapping(uint=>bool)) approvals; // approvals[address][i] = true means user at "address" approved Request at index "i" in requests
+    mapping(address=>mapping(uint=>bool)) public approvals; // approvals[address][i] = true means user at "address" approved Request at index "i" in requests
     uint public approversCount;
     Request[] public requests;
     
