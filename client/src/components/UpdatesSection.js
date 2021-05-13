@@ -182,7 +182,7 @@ export default function UpdatesSection({ manager, address }) {
             </Button>
           </div>
           <CardContent className={classes.content}>
-            <TextField multiline fullWidth rows={7} variant='outlined' value={updateText} onChange={handleChange} />
+            <TextField label="Update Info" required multiline fullWidth rows={7} variant='outlined' value={updateText} onChange={handleChange} />
           </CardContent>
           <TransactionButton className={classes.submitBtn} onClick={handleSubmit}>
             Send Update
