@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import React, { useState } from 'react';
 import CampaignsShowcase from '../../components/CampaignShowcase';
-
+import factory from '../../utils/factory';
 const useStyles = makeStyles(theme => ({
   root: {
     paddingTop: '3rem',
@@ -26,20 +26,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function allCampaignPage() {
+export default function allCampaignPage({campaigns}) {
   const classes = useStyles();
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('oldest');
-  const camps = [
-    ['Release The Snyder Cut', 'Some story', 'brokeimage', 500, 700, 4000000000000, '0x843468468684'],
-    ['Some Interesting name', 'Some story', 'brokeimage', 1800, 700, 5278000000, '0x843468468684'],
-    ['Release The Snyder Verse', 'Some story', 'brokeimage', 500, 1800, 40000000000010, '0x843468468684'],
-    ['Boring Company', 'Some story', 'brokeimage', 5100, 7200, 40000000000010, '0x843468468684'],
-    ['Dunkin Donut', 'Some story', 'brokeimage', 900, 500, 40000000000010, '0x843468468684'],
-    ['Nolan is genius', 'Some story', 'brokeimage', 500, 1200, 40000000000010, '0x843468468684'],
-    ['Oxygen Help', 'Some story', 'brokeimage', 100, 700, 40000000000010, '0x843468468684'],
-    ['Need Medicine', 'Some story', 'brokeimage', 700, 700, 40000000000010, '0x843468468684'],
-  ];
 
   const handleSearch = e => {
     setSearch(e.target.value);
@@ -65,7 +55,15 @@ export default function allCampaignPage() {
           </Select>
         </FormControl>
       </Typography>
-      <CampaignsShowcase campaigns={camps} searchQuery={search} sortBy={sortBy} />
+      <CampaignsShowcase campaigns={campaigns} searchQuery={search} sortBy={sortBy} />
     </Container>
   );
+}
+
+export async function getServerSideProps(context) {
+  if(!factory) return {props:{campaigns:[]}}
+  const campaigns = await factory.methods.getDeployedCampaignsDetails().call();
+  return {
+    props: {campaigns}, // will be passed to the page component as props
+  }
 }
