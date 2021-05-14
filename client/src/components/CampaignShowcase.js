@@ -49,7 +49,7 @@ export default function CampaignsShowcase({campaigns, limit, sortBy, searchQuery
         <Grid container spacing={3} >
             {
                 limited.map((campaign, idx) => (
-                    <Grid item xs={12} sm={3} key={idx} className={classes.gridCell}>
+                    <Grid item xs={12} sm={6} md={3} key={idx} className={classes.gridCell}>
                             <CampaignCard campaign={campaign} />
                     </Grid>
                 ))
