@@ -13,6 +13,7 @@ import {
   Grid,
   Chip
 } from '@material-ui/core';
+import ValueInput from './ValueInput';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import React, { useState, useEffect, useContext } from 'react';
 import UserContext from '../contexts/user/user.context';
@@ -154,9 +155,10 @@ export default function RequestsSection({ manager, address, balance, backers }) 
     e.preventDefault();
     const validAddr = web3.utils.isAddress(receiver);
     if (!validAddr) return alert('Receiver is not a valid address');
+    if(!amount) return;
     try {
       setLoading(true);
-      await campaign.methods.createRequest(reqDesc, amount, receiver).send({ from: user });
+      await campaign.methods.createRequest(reqDesc, amount.toString(), receiver).send({ from: user });
       setRequests([...requests, [reqDesc, amount, receiver, false, 0]]);
       setReqDesc('');
       setAmount(1);
@@ -247,16 +249,15 @@ export default function RequestsSection({ manager, address, balance, backers }) 
             onChange={handleDesc}
           />
           <Box className={classes.box}>
-            <TextField
+            <ValueInput
               label='Amount'
               required
               size='small'
-              type='number'
-              InputProps={{ minimum: 1 }}
+              // type='number'
+              InputProps={{ minimum: 0 }}
               variant='outlined'
               className={classes.boxInput}
-              value={amount}
-              onChange={handleAmt}
+              setter={setAmount}
             />
             <TextField
               label='Receiver'
@@ -290,7 +291,7 @@ export default function RequestsSection({ manager, address, balance, backers }) 
                   InputProps={{
                     readOnly: true,
                   }}
-                  defaultValue={request[1]}
+                  defaultValue={minLengthValue(request[1])}
                   size='small'
                   className={classes.input}
                 />
