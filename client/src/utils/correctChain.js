@@ -1,12 +1,12 @@
 import web3 from '../utils/web3';
 
-const correctChain = async()=> {
+const correctChain = async(showAlert=true)=> {
     const networkId = await web3.eth.net.getId();
     const DEPLOYED_NETWORK_ID = process.env.DEPLOYED_NETWORK_ID;
 
     if (DEPLOYED_NETWORK_ID != networkId)
     {
-        if(typeof alert !== 'undefined')
+        if(typeof alert !== 'undefined' && showAlert)
         alert(`Please Change network to ${chainMap[DEPLOYED_NETWORK_ID]} network`);
         return false;
     } 
