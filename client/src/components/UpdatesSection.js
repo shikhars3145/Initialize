@@ -5,6 +5,7 @@ import Campaign from '../utils/Campaign';
 import TransactionButton from './TransactionButton';
 import ipfs from '../utils/ipfs';
 import web3 from '../utils/web3';
+import correctChain from '../utils/correctChain';
 
 const useStyles = makeStyles(theme => ({
   heading: {
@@ -61,7 +62,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function UpdatesSection({ manager, address }) {
+export default function UpdatesSection({ manager, address, updateProps }) {
   const classes = useStyles();
   const [isAdmin, setIsAdmin] = useState(false);
   const { user, setUser } = useContext(UserContext);
@@ -71,7 +72,7 @@ export default function UpdatesSection({ manager, address }) {
   const [loading, setloading] = useState(false);
   const [campaign, setCampaign] = useState(null);
   const [updateText, setUpdateText] = useState('');
-  const [updates, setUpdates] = useState([]);
+  const [updates, setUpdates] = useState(updateProps);
 
   useEffect(() => {
     if (user && manager == user) {
@@ -87,9 +88,14 @@ export default function UpdatesSection({ manager, address }) {
   useEffect(() => {
     const getInstance = async () => {
       const campaign = Campaign(address);
+      try{
       const updates = await campaign.methods.getUpdates().call();
       setUpdates(updates);
       setCampaign(campaign);
+      }
+      catch(err){
+        console.log(err)
+      }
     };
     getInstance();
   }, []);
@@ -101,10 +107,8 @@ export default function UpdatesSection({ manager, address }) {
   const handleSubmit = async () => {
     console.log('submitted');
     if (updateText === '') return alert('Give an Update text Before submitting');
-    const networkId = await web3.eth.net.getId();
-    const DEPLOYED_NETWORK_ID = process.env.DEPLOYED_NETWORK_ID;
-
-    if (DEPLOYED_NETWORK_ID != networkId) return alert(`Please Change network to network id:${DEPLOYED_NETWORK_ID}`);
+    const isCorrectChain = await correctChain();
+    if(!isCorrectChain) return;
     // show loader in backdrop and disable background and submit button
     setloading(true);
     try {

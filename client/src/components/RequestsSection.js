@@ -21,6 +21,8 @@ import Campaign from '../utils/Campaign';
 import web3 from '../utils/web3';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import minLengthValue from '../utils/minLengthValue';
+import correctChain from '../utils/correctChain';
+import TransactionButton from './TransactionButton';
 
 
 const useStyles = makeStyles(theme => ({
@@ -89,12 +91,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function RequestsSection({ manager, address, balance, backers }) {
+export default function RequestsSection({ manager, address, balance, backers,requestProps }) {
   const classes = useStyles();
   const [isAdmin, setIsAdmin] = useState(false);
   const { user, setUser } = useContext(UserContext);
   const [campaign, setCampaign] = useState(null);
-  const [requests, setRequests] = useState([]);
+  const [requests, setRequests] = useState(requestProps);
   const [isContributor, setIsContributor] = useState(false);
   const [receiver, setReceiver] = useState('');
   const [reqDesc, setReqDesc] = useState('');
@@ -106,9 +108,15 @@ export default function RequestsSection({ manager, address, balance, backers }) 
   useEffect(() => {
     const getInstance = async () => {
       const campaign = Campaign(address);
+      try{
       const requests = await campaign.methods.getRequests().call();
       setRequests(requests);
       setCampaign(campaign);
+      }
+      catch(err)
+      {
+        console.log(err);
+      }
     };
 
     getInstance();
@@ -130,7 +138,7 @@ export default function RequestsSection({ manager, address, balance, backers }) 
       campaign.methods
         .approvers(user)
         .call()
-        .then(isContributorLocal => setIsContributor(isContributorLocal));
+        .then(isContributorLocal => setIsContributor(isContributorLocal)).catch(err=>console.log(err));
     }
   }, [user,backers,campaign]);
 
@@ -156,6 +164,8 @@ export default function RequestsSection({ manager, address, balance, backers }) 
     const validAddr = web3.utils.isAddress(receiver);
     if (!validAddr) return alert('Receiver is not a valid address');
     if(!amount) return;
+    const isCorrectChain = await correctChain();
+    if(!isCorrectChain) return;
     try {
       setLoading(true);
       await campaign.methods.createRequest(reqDesc, amount.toString(), receiver).send({ from: user });
@@ -172,10 +182,6 @@ export default function RequestsSection({ manager, address, balance, backers }) 
 
   const handleReceiver = e => {
     setReceiver(e.target.value);
-  };
-
-  const handleAmt = e => {
-    setAmount(e.target.value);
   };
 
   const handleDesc = e => {
@@ -329,12 +335,12 @@ export default function RequestsSection({ manager, address, balance, backers }) 
                 />
               </CardContent>
               <CardActions disableSpacing style={{marginTop:"auto"}}>
-                {isContributor&&<Button data-idx={idx} color='primary' variant='contained' onClick={handleApprove} disabled={loading||approved[idx]||request[3]}>
+                {isContributor&&<TransactionButton data-idx={idx} color='primary' variant='contained' onClick={handleApprove} disabled={loading||approved[idx]||request[3]}>
                   Approve
-                </Button>}
-                {isAdmin&&<Button data-idx={idx} color='primary' variant='contained' onClick={handleFinalise} style={{ marginLeft: 'auto' }} disabled={loading||request[3]}>
+                </TransactionButton>}
+                {isAdmin&&<TransactionButton data-idx={idx} color='primary' variant='contained' onClick={handleFinalise} style={{ marginLeft: 'auto' }} disabled={loading||request[3]}>
                   Finalise
-                </Button>}
+                </TransactionButton>}
               </CardActions>
             </Card>
           </Grid>
