@@ -7,11 +7,14 @@ import theme from '../themes/theme';
 import Navbar from '../components/Navbar';
 import UserContext from '../contexts/user/user.context';
 import web3 from '../utils/web3';
+import WrongChainAlert from '../components/WrongChainAlert';
+import correctChain from '../utils/correctChain';
 
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
   const [user, setUser] = useState(null);
+  const [isCorrectChain, setIsCorrectChain] = useState(true);
 
   if(typeof ethereum !== 'undefined')
     {
@@ -28,6 +31,10 @@ export default function MyApp(props) {
     if (jssStyles) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
+    correctChain(false).then(isCorrect=>{
+      console.log("iscorrect", isCorrect);
+      setIsCorrectChain(isCorrect);
+    });
   }, []);
 
   return (
@@ -42,6 +49,7 @@ export default function MyApp(props) {
         <UserContext.Provider value={{user,setUser}}>
         <Navbar/>
         <Component {...pageProps} />
+        {!isCorrectChain&&<WrongChainAlert/>}
         </UserContext.Provider>
       </ThemeProvider>
     </React.Fragment>
