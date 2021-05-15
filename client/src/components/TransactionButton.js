@@ -1,57 +1,97 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import UserContext from '../contexts/user/user.context';
 import web3 from '../utils/web3';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles,Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@material-ui/core';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
+import correctChain from '../utils/correctChain';
+import MetaMaskOnboarding from '@metamask/onboarding';
+import ConnectWalletBtn from './ConnectWalletBtn';
 
 const useStyles = makeStyles(theme => ({
-    icon:{ 
-        padding: 2,
-        border: `5px solid ${theme.palette.secondary.main}`,
-        height: 46,
-        width:46,
-        borderRadius:"50%",
-        marginRight:5
-      },
+      title:{
+        textAlign:"center"
+    },
+    btn:{
+        marginRight:"auto",
+        marginLeft:"auto"
+    }
 }));
 
-export default function TransactionButton({ children, onClick, type, ...btnProps }) {
+export default function TransactionButton({ connect,children, onClick, type, ...btnProps }) {
   const { user, setUser } = useContext(UserContext);
+  const [openConnectModal, setOpenConnectModal] = useState(false);
+  const [openGetWalletModal, setOpenGetWalletModal] = useState(false);
+  const onboarding = useRef();
   const classes = useStyles();
+
+  useEffect(() => {
+    if (!onboarding.current) {
+        onboarding.current = new MetaMaskOnboarding();
+      }
+  }, [])
+
+  useEffect(()=>{
+    if(user) setOpenConnectModal(false);
+  },[user])
+
+  const txnOnclick = async(e)=> {
+      const event={...e};
+    const isCorrectChain = await correctChain();
+    if(!isCorrectChain) return;
+    onClick(event);
+  }
 
   const connectWallet = () => {
     if (typeof ethereum !== 'undefined') {
-      ethereum
-        .request({ method: 'eth_requestAccounts' })
-        .then(accounts => {
-          setUser(web3.utils.toChecksumAddress(accounts[0]));
-        })
-        .catch(err => {
-          console.log(err);
-          alert(err.message);
-        });
+      // show connect modal
+      setOpenConnectModal(true);
     } else {
-      alert('No Wallet Detected Please Consider Using Metamask');
+      // show get wallet modal
+      setOpenGetWalletModal(true);
     }
   };
 
+  const handleClose = ()=>{
+    setOpenConnectModal(false);
+    setOpenGetWalletModal(false);
+}
+
+const handleOnboarding = () => {
+  onboarding.current.startOnboarding();
+}
+
   return (
-    <Button style={{width:"fit-content"}} onClick={user ? onClick : connectWallet} type={user ? type : 'button'} {...btnProps}>
-      {user ? (
-        children ? (
-          children
-        ) : (
-          <>
-            <span class={classes.icon}>
-              <Jazzicon diameter={32} seed={jsNumberForAddress(user)} />
-            </span>
-            {`  ${user.slice(0, 6)}...${user.slice(-6)}`}
-          </>
-        )
-      ) : (
-        'Connect Wallet'
-      )}
+      <>
+    <Button style={{width:"fit-content"}} onClick={user ? txnOnclick : connectWallet} type={user ? type : 'button'} {...btnProps}>
+        {children}
     </Button>
+    
+    <Dialog onClose={handleClose} aria-labelledby='simple-dialog-title' open={openGetWalletModal}>
+        <DialogTitle className={classes.title} id='simple-dialog-title'>No Wallet Detected</DialogTitle>
+        <DialogContent dividers>
+            <Typography gutterBottom>
+            You need to have a cryptocyrrency wallet to connect and perform this action.
+            </Typography>
+        </DialogContent>
+        <DialogActions>
+            <Button autoFocus onClick={handleOnboarding} className={classes.btn} color='primary' variant="contained">
+                Get Wallet
+            </Button>
+        </DialogActions>
+    </Dialog>
+
+    <Dialog onClose={handleClose} aria-labelledby='simple-dialog-title' open={openConnectModal}>
+        <DialogTitle className={classes.title} id='simple-dialog-title'>Wallet Connection Required</DialogTitle>
+        <DialogContent dividers>
+            <Typography gutterBottom>
+            To perform this action you need to connect your wallet.
+            </Typography>
+        </DialogContent>
+        <DialogActions>
+            <ConnectWalletBtn variant="contained" color='primary' disabled={!!user} className={classes.btn} autoFocus> Connected </ConnectWalletBtn>
+        </DialogActions>
+    </Dialog>
+  </>
   );
 }
