@@ -20,7 +20,7 @@ import StorySection from '../../components/StorySection';
 import ValueInput from '../../components/ValueInput';
 import RequestsSection from '../../components/RequestsSection';
 import UpdatesSection from '../../components/UpdatesSection';
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Campaign from '../../utils/Campaign';
 import {
@@ -37,6 +37,8 @@ import ShareBtn from '../../components/ShareBtn';
 import minLengthValue from '../../utils/minLengthValue';
 import UserContext from '../../contexts/user/user.context';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import TransactionButton from '../../components/TransactionButton';
+import correctChain from '../../utils/correctChain';
 const useStyles = makeStyles(theme => ({
   root: {
     overflow: 'hidden',
@@ -131,7 +133,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function campaignDetails({ details, backers }) {
+export default function campaignDetails({ details, backers, updates, requests }) {
   const md = useMediaQuery(theme => theme.breakpoints.up('md'));
   const router = useRouter();
   const classes = useStyles();
@@ -176,10 +178,6 @@ export default function campaignDetails({ details, backers }) {
 
   const handleTabChange = (e, newValue) => {
     setValue(newValue);
-  };
-
-  const handleContriChange = e => {
-    setContribution(e.target.value);
   };
 
   const refreshData = () => {
@@ -254,8 +252,9 @@ export default function campaignDetails({ details, backers }) {
                   InputProps={{ className: classes.input }}
                   // onChange={handleContriChange}
                   setter={setContribution}
+                  value={contribution}
                 />
-                <Button
+                <TransactionButton
                   variant='contained'
                   onClick={contribute}
                   color='primary'
@@ -263,7 +262,7 @@ export default function campaignDetails({ details, backers }) {
                   classes={{ root: classes.btn }}
                 >
                   Contribute
-                </Button>
+                </TransactionButton>
               </Box>
               <Box className={classes.shareWrapper}>
                 <FacebookShareButton url={shareUrl} quote={title} className={classes.shareButton}>
@@ -298,13 +297,14 @@ export default function campaignDetails({ details, backers }) {
       </Tabs>
       <Container className={classes.root}>
         {value == 0 && <StorySection story={state.story} />}
-        {value == 1 && <UpdatesSection updates={state.updates} manager={state.manager} address={state.contractAddr} />}
+        {value == 1 && <UpdatesSection updates={state.updates} manager={state.manager} address={state.contractAddr} updateProps={updates}/>}
         {value == 2 && (
           <RequestsSection
             manager={state.manager}
             balance={state.balance}
             address={state.contractAddr}
             backers={state.backers}
+            requestProps={requests}
           />
         )}
       </Container>
@@ -323,10 +323,14 @@ export async function getServerSideProps(context) {
   }
   let campaignDetails;
   let backers;
+  let requests;
+  let updates
 
   try {
     campaignDetails = await campaign.methods.getDetails().call();
     backers = await campaign.methods.approversCount().call();
+    requests = await campaign.methods.getRequests().call();
+    updates = await campaign.methods.getUpdates().call();
   } catch (err) {
     // console.log("invalid id")
     return {
@@ -335,6 +339,6 @@ export async function getServerSideProps(context) {
   }
 
   return {
-    props: { details: campaignDetails, backers }, // will be passed to the page component as props
+    props: { details: campaignDetails, backers, updates, requests }, // will be passed to the page component as props
   };
 }

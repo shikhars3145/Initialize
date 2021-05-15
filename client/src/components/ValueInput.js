@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import { InputAdornment, Select, MenuItem } from "@material-ui/core";
 
-export default function BasicTextFields({ setter, InputProps,...otherProps }) {
+export default function BasicTextFields({ setter, value,InputProps,...otherProps }) {
   const [input, setInput] = useState("");
   const [multiplier, setMultiplier] = useState(1e18);
 
@@ -17,6 +17,10 @@ export default function BasicTextFields({ setter, InputProps,...otherProps }) {
   useEffect(() => {
     setter(Number(input) * Number(multiplier));
   }, [input, multiplier, setter]);
+
+  useEffect(()=>{
+    if(!value) setInput('');
+  },[value]);
 
   return (
       <TextField

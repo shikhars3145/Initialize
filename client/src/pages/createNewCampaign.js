@@ -3,10 +3,12 @@ import React, { useState, useRef, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import UserContext from '../contexts/user/user.context';
 import TransactionButton from '../components/TransactionButton';
+import ValueInput from '../components/ValueInput';
 import ipfs from '../utils/ipfs';
 import factory from '../utils/factory.js';
 import web3 from '../utils/web3'
 import { useRouter } from 'next/router'
+import correctChain from '../utils/correctChain';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -56,7 +58,9 @@ export default function createNewCampaign() {
   const [backDropOpen, setbackDropOpen] = useState(false);
   const [loading, setloading] = useState(false);
   const [imgBuffer, setImgBuffer] = useState(null);
-  const [receipt, setReceipt] = useState(null)
+  const [receipt, setReceipt] = useState(null);
+  const [minContri, setMinContri] = useState('');
+  const [goal, setGoal] = useState('')
   const router = useRouter();
 
   const triggerClick = () => {
@@ -88,15 +92,14 @@ export default function createNewCampaign() {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
+    if(!minContri||!goal) return;
+    if(minContri<=0 || goal<=0) return alert("MinContribution and Goal should be positive");
     if(!imgBuffer) return alert("Please Select An Image for your Campaign");
     // console.log(state);
 
-    const networkId = await web3.eth.net.getId();
-    const DEPLOYED_NETWORK_ID = process.env.DEPLOYED_NETWORK_ID;
-    // console.log(typeof DEPLOYED_NETWORK_ID);
-    // console.log(typeof networkId);
+    const isCorrectChain = await correctChain();
+    if(!isCorrectChain) return;
 
-    if(DEPLOYED_NETWORK_ID != networkId) return alert(`Please Change network to network id:${DEPLOYED_NETWORK_ID}`);
     // show loader in backdrop and disable background and submit button
     setbackDropOpen(true);
     setloading(true);
@@ -104,7 +107,7 @@ export default function createNewCampaign() {
     // send image buffer to ipfs
     const {path} = await ipfs.add(imgBuffer);
     // create campaign from factory
-    const receipt = await factory.methods.createCampaign(state.title, state.story, path, state.minContri, state.goal).send({from:user});
+    const receipt = await factory.methods.createCampaign(state.title, state.story, path, minContri.toString(), goal.toString()).send({from:user});
     // show transaction hash in backdrop with a Take me to campaign button
     setloading(false);
     console.log(receipt);
@@ -113,7 +116,7 @@ export default function createNewCampaign() {
     catch(err){
     setbackDropOpen(false);
     setloading(false);
-    alert("Some error occured");
+    alert(err.message);
     }
   };
 
@@ -150,30 +153,31 @@ export default function createNewCampaign() {
           {imgSrc?"Change Image":"Select Image"}
           </Button>
         </div>
-        <TextField
+        <ValueInput
           name='minContri'
           fullWidth
           InputProps={{
             inputProps: {
-              min: 1,
-              type: 'number',
-              required: true,
+              min: 0
             },
           }}
           label='Minimum Contribution Value'
-          helperText='Minimum wei a contributer must contribute'
+          helperText='Minimum amount a contributer must contribute'
           className={classes.input}
           required
-          onChange={handleChange} value={state.minContri || ""}
+          // onChange={handleChange} 
+          setter={setMinContri}
+          // value={state.minContri || ""}
         />
-        <TextField
+        <ValueInput
           name='goal'
           label='Goal'
           fullWidth
-          InputProps={{ inputProps: { min: 1, type: 'number' } }}
+          InputProps={{ inputProps: { min: 0 } }}
           className={classes.input}
           required
-          onChange={handleChange} value={state.goal || ""}
+          // onChange={handleChange} value={state.goal || ""}
+          setter={setGoal}
         />
         <TextField
           name='fundraiser'
