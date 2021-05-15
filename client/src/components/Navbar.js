@@ -2,6 +2,8 @@ import React from 'react';
 import {AppBar, Toolbar, Typography} from '@material-ui/core';
 import TransactionButton from './TransactionButton';
 import { makeStyles } from '@material-ui/core/styles';
+import { useRouter } from 'next/router';
+import ConnectWalletBtn from './ConnectWalletBtn';
 
 const useStyles = makeStyles((theme) => ({
     menuButton: {
@@ -11,22 +13,21 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
     },
     btn:{
-        width: '10rem',
         color:'#fff'
     }
   }));
 
 export default function Navbar() {
     const classes = useStyles();
-    
+    const router = useRouter();
     return (
         <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-                <Typography variant="h6" className={classes.title}>
+                <Typography variant="h6" className={classes.title} style={{cursor:"pointer"}} onClick={()=>router.push('/')}>
                 INITIALIZE
                 </Typography>
-                <TransactionButton className={classes.btn} variant="outlined"/>
+                <ConnectWalletBtn className={classes.btn} variant="outlined"/>
           </Toolbar>
         </AppBar>
       </div>
