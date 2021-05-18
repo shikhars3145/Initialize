@@ -3,14 +3,14 @@ import React from 'react';
 
 export default function About() {
   return (
-    <Container>
-      <Typography variant='h2' color="secondary" gutterBottom style={{ marginTop: '2rem',marginBottom:"1rem" }} align='center'>
+    <Container id="about">
+      <Typography variant='h2' color="secondary" gutterBottom style={{ marginTop: '1rem',marginBottom:"0rem" }} align='center'>
         ABOUT
       </Typography>
 
       <Grid container spacing={3} alignItems="center">
         <Grid item xs={12} sm={6} md={8}>
-        <Typography variant='h5' align='left' style={{color:"#fff"}}>
+        <Typography variant='h6' align='left' style={{color:"#fff"}}>
             INITIALIZE is distributed crowdfunding platform which allows individuals (and nonprofits!) to raise money
             for nearly any kind of cause or project. INITIALIZE is a blockchain based crowdfunding platform, which
             ensures lower transaction fees, enhanced security, and transparency. Our platform also prevents contributors

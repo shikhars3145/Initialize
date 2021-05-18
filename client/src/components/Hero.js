@@ -2,6 +2,8 @@ import { Button, Container, Typography } from '@material-ui/core';
 import React from 'react';
 import { useRouter } from 'next/router'
 import { makeStyles } from "@material-ui/core/styles";
+import {Link} from 'react-scroll'
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 const useStyles = makeStyles((theme) => ({
     btn: {
@@ -50,6 +52,15 @@ const useStyles = makeStyles((theme) => ({
         marginRight:"2rem",
         marginBottom:"5rem",
         textTransform: "uppercase"
+    },
+    arrow:{
+        marginTop:"2rem",
+        cursor:"pointer",
+        '&:hover':{
+            transform:"translateY(10px) scale(1.05)",
+            transition: "all 0.2s linear ",
+            opacity:"0.8"
+        }
     }
   }));
 
@@ -71,6 +82,7 @@ export default function Hero() {
                 A Blockchain based crowdfunding platform 
             </Typography>
             <Button className={classes.btn} size="large" color="primary" variant="contained" onClick={redirectToCreate}>Create A Campaign</Button>
+            <Link className={classes.arrow}  to="about" smooth={true}><KeyboardArrowDownIcon style={{fontSize:"7rem"}}/></Link>
         </Container>
         </div>
     )

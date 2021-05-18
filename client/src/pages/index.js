@@ -34,7 +34,7 @@ export default function Home({campaigns}) {
       <Hero/>
       <About/>
       <Container>
-      <Typography variant="h4" gutterBottom style={{margin:"3rem 0", color:"#fff"}} align="left">
+      <Typography variant="h4" gutterBottom style={{marginTop:"2rem", color:"#fff"}} align="left">
         Featured Campaigns:
       </Typography>
       </Container>
