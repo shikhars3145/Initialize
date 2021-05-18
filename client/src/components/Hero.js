@@ -1,22 +1,55 @@
 import { Button, Container, Typography } from '@material-ui/core';
 import React from 'react';
 import { useRouter } from 'next/router'
-import TransactionButton from './TransactionButton';
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     btn: {
-      width: "60%",
-      marginTop: "3rem"
+      marginTop: "3rem",
+      padding: "1rem 2rem",
+      fontSize: "1.5rem",
+      border: "2px solid #fff",
+      borderRadius:"0",
+      outline: "2px solid #fff",
+      outlineOffset: "3px",
+      '&:hover':{
+          backgroundColor:"#fff",
+          borderColor:theme.palette.primary.main,
+          outlineColor: theme.palette.primary.main,
+          color: theme.palette.primary.main,
+          transition: "all 0.2s linear"
+      }
+    },
+    hero:{
+        minHeight:"calc(100vh - 64px)",
+        // background: "linear-gradient(135deg, rgba(255, 0, 150, 0.3), rgba(0, 0, 100, 0.3)), url(/bg.jpg)",
+        background: "linear-gradient(135deg, rgba(125, 213, 111, 0.85), rgba(40, 180, 135, 0.85)), url(/bg2.jpg)",
+        backgroundSize:"cover",
+        backgroundRepeat:"no-repeat",
+        backgroundPosition: "center",
+        display: "flex",
+        flexDirection:"column",
+        alignItems:"center",
+        justifyContent: "space-around",
+        color: "#fff"
+    },
+    heading:{
+        fontWeight:500,
     },
     container:{
         textAlign: "center",
         paddingTop: "3rem",
-        marginBottom: "3rem"
-
+        display: "flex",
+        flexDirection:"column",
+        justifyContent: "space-around",
+        alignItems:"center",
     },
     desc: {
-        marginTop: "5rem"
+        // marginTop: "5rem",
+        marginLeft:"2rem",
+        marginRight:"2rem",
+        marginBottom:"5rem",
+        textTransform: "uppercase"
     }
   }));
 
@@ -29,20 +62,16 @@ export default function Hero() {
     }
 
     return (
+        <div className={classes.hero}>
         <Container className={classes.container}>
-            <Typography variant="h2">
+            <Typography variant="h2" className={classes.heading}>
                 INITIALIZE
             </Typography>
             <Typography variant="h6" className={classes.desc}>
-                INITIALIZE is distributed crowdfunding platform which allows individuals 
-                (and nonprofits!) to raise money for nearly any kind of cause or project. 
-                INITIALIZE is a blockchain based crowdfunding platform, which ensures lower 
-                transaction fees, enhanced security, and transparency. Our platform also prevents 
-                contributors from getting scammed as the fundraiser has to initiate request 
-                for taking out funds from the campain, and each request is voted upon 
-                by the contributors giving contributors control over how funds are spent.
+                A Blockchain based crowdfunding platform 
             </Typography>
             <Button className={classes.btn} size="large" color="primary" variant="contained" onClick={redirectToCreate}>Create A Campaign</Button>
         </Container>
+        </div>
     )
 }

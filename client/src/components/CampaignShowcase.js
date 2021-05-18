@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
         // justifyContent: 'center',
         alignItems: 'center',
         flexGrow: 1,
-        paddingBottom: "2rem"
+        paddingBottom: "1rem"
     },
     heading:{
         marginBottom: "2rem"
@@ -36,7 +36,7 @@ const sortFunc = (sortBy,filtered) =>{
     return filtered;
 }
 
-export default function CampaignsShowcase({campaigns, limit, sortBy, searchQuery}) {
+export default function CampaignsShowcase({campaigns, limit, sortBy, searchQuery, cardStyle}) {
     const classes = useStyles();
     if(!searchQuery) searchQuery="";
     const filtered = campaigns.filter(campaign => campaign[0].toLowerCase().includes(searchQuery.toLowerCase()));
@@ -50,7 +50,7 @@ export default function CampaignsShowcase({campaigns, limit, sortBy, searchQuery
             {
                 limited.map((campaign, idx) => (
                     <Grid item xs={12} sm={6} md={3} key={idx} className={classes.gridCell}>
-                            <CampaignCard campaign={campaign} />
+                            <CampaignCard campaign={campaign} style={cardStyle}/>
                     </Grid>
                 ))
             }

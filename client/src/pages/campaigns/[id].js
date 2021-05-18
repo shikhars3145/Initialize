@@ -13,6 +13,7 @@ import {
   Tabs,
   IconButton,
 } from '@material-ui/core';
+import clsx from 'clsx';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
@@ -43,6 +44,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     overflow: 'hidden',
     paddingBottom: '2rem',
+    backgroundColor:"#fff"
   },
   paper: {
     padding: theme.spacing(2),
@@ -55,14 +57,27 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'center',
   },
+  removeTopBorderRadius:{
+    borderTopLeftRadius: 0,
+    borderTopRightRadius:0
+  },
   media: {
     height: 0,
     paddingTop: '56.25%', // 16:9
     width: '100%',
+    borderRadius:"inherit"
   },
   heading: {
-    margin: '3rem auto 3rem auto',
+    margin: '3rem auto 5rem auto',
     width:"fit-content",
+  },
+  nameHeading:{
+    //background: "linear-gradient(135deg, rgba(125, 213, 111, 0.9), rgba(40, 180, 135, 0.9))",
+    color: theme.palette.primary.main,
+    // padding:"1rem",
+    // margin:"1rem",
+    // boxDecorationBreak: "clone",
+    // transform: "skewX(-12deg)"
   },
   by: {
     display: 'block',
@@ -96,6 +111,8 @@ const useStyles = makeStyles(theme => ({
     borderRadius: 0,
     height: '40px',
     padding: 0,
+    backgroundColor:"#fff",
+    border:`1px solid ${theme.palette.primary.main}`
   },
   textInput: {
     width: '60%',
@@ -109,6 +126,7 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.primary.main,
     fontSize: '2rem',
     lineHeight: 1,
+    fontWeight:400
   },
   btn: {
     width: '35%',
@@ -205,21 +223,23 @@ export default function campaignDetails({ details, backers, updates, requests })
   return (
     <>
       <Container className={classes.root}>
-        <Typography variant={md?'h3':'h4'} align='left' className={classes.heading}>
-          {state.title}
-          <Typography variant='body1' className={classes.by}>
-            {"by "} 
-            <span class={classes.icon}>
-              <Jazzicon diameter={32} seed={jsNumberForAddress(state.manager)} />
-            </span>
-            {` ${state.manager.slice(0, 6)}...${state.manager.slice(-4)}`}
-            <CopyToClipboard text={state.manager}>
-              <IconButton size='small' style={{ position: 'relative', top: '-3px' }}>
-                <FileCopyIcon fontSize='small' />
-              </IconButton>
-            </CopyToClipboard>
+        <div className={classes.heading}>
+          <Typography gutterBottom variant={md?'h3':'h4'} align='left' className={classes.nameHeading}>
+            {state.title}
           </Typography>
-        </Typography>
+          <Typography variant='body1' className={classes.by}>
+              {"by "} 
+              <span class={classes.icon}>
+                <Jazzicon diameter={32} seed={jsNumberForAddress(state.manager)} />
+              </span>
+              {` ${state.manager.slice(0, 6)}...${state.manager.slice(-4)}`}
+              <CopyToClipboard text={state.manager}>
+                <IconButton size='small' style={{ position: 'relative', top: '-3px' }}>
+                  <FileCopyIcon fontSize='small' />
+                </IconButton>
+              </CopyToClipboard>
+            </Typography>
+          </div>
         <Grid container spacing={5} className={classes.grid}>
           <Grid item xs={12} md={8} className={classes.gridItem}>
             <Paper className={classes.paper}>
@@ -228,11 +248,12 @@ export default function campaignDetails({ details, backers, updates, requests })
             </Paper>
           </Grid>
           <Grid item xs={12} md={4} className={classes.gridItem}>
-            <Paper className={classes.paper}>
+            <Paper className={clsx(classes.paper,classes.removeTopBorderRadius)}>
               <LinearProgress
                 variant='determinate'
                 value={Math.min((Number(state.funding) / Number(state.goal))*100, 100)}
                 className={classes.progress}
+                color="primary"
               />
               <Typography className={classes.typo}>
                 Raised <span className={classes.info}>{minLengthValue(state.funding).toUpperCase()}</span>
@@ -288,7 +309,6 @@ export default function campaignDetails({ details, backers, updates, requests })
         indicatorColor='primary'
         textColor='primary'
         onChange={handleTabChange}
-        aria-label='disabled tabs example'
         centered={true}
       >
         <Tab label='Story' />

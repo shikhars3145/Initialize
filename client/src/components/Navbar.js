@@ -27,6 +27,9 @@ export default function Navbar() {
                 <Typography variant="h6" className={classes.title} style={{cursor:"pointer"}} onClick={()=>router.push('/')}>
                 INITIALIZE
                 </Typography>
+                <Typography variant="body1" style={{cursor:"pointer",margin:"0 1rem"}} onClick={()=>router.push('/campaigns')}>
+                CAMPAIGNS
+                </Typography>
                 <ConnectWalletBtn className={classes.btn} variant="outlined"/>
           </Toolbar>
         </AppBar>

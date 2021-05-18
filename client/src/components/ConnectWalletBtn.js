@@ -9,7 +9,7 @@ import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 const useStyles = makeStyles(theme => ({
   icon: {
     padding: 2,
-    border: `5px solid ${theme.palette.secondary.main}`,
+    border: `5px solid ${theme.palette.primary.contrastText}`,
     height: 46,
     width: 46,
     borderRadius: '50%',

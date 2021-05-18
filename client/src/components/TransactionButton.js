@@ -36,7 +36,8 @@ export default function TransactionButton({ connect,children, onClick, type, ...
   },[user])
 
   const txnOnclick = async(e)=> {
-      const event={...e};
+    if(!onClick) return;
+    const event={...e};
     const isCorrectChain = await correctChain();
     if(!isCorrectChain) return;
     onClick(event);
