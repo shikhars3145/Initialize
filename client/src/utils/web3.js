@@ -6,8 +6,8 @@ let web3;
 if(typeof window === 'undefined' || typeof window.ethereum === 'undefined')
 {
     // server or metamask not in use
-    // const provider = new Web3.providers.HttpProvider('https://ropsten.infura.io/v3/37e5bcdfd72c4a54ade25beb820b0870');
-    const provider = new Web3.providers.HttpProvider('HTTP://127.0.0.1:7545');
+    const provider = new Web3.providers.HttpProvider('https://ropsten.infura.io/v3/5844f93f3d524909a82e2a2b569cfdcf');
+    // const provider = new Web3.providers.HttpProvider('HTTP://127.0.0.1:7545');
     
     web3 = new Web3(provider);
 } 
