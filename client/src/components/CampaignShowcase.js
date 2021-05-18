@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 const sortFunc = (sortBy,filtered) =>{
     if(sortBy==="latest") return filtered.reverse();
-    if(sortBy==="funds") return filtered.sort((a,b)=>a[4]-b[4]);
+    if(sortBy==="funds") return filtered.sort((a,b)=>b[4]-a[4]);
     if(sortBy==="percent") return filtered.sort((a,b)=>(b[4]/b[3])-(a[4]/a[3]));
     if(sortBy==="alpha") return filtered.sort((a,b)=>(a[0].toLowerCase()<b[0].toLowerCase()?-1:1));
     return filtered;
