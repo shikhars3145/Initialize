@@ -5,7 +5,7 @@ import {chainMap} from '../utils/correctChain';
 
 const useStyles = makeStyles((theme)=>({
     alert:{
-        position:"sticky",
+        position:"fixed",
         bottom: "0.5rem",
         left:0,
         right:0,
