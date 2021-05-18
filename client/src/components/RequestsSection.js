@@ -23,6 +23,7 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 import minLengthValue from '../utils/minLengthValue';
 import correctChain from '../utils/correctChain';
 import TransactionButton from './TransactionButton';
+import LoadingContext from '../contexts/loading/loading.context';
 
 
 const useStyles = makeStyles(theme => ({
@@ -101,7 +102,7 @@ export default function RequestsSection({ manager, address, balance, backers,req
   const [receiver, setReceiver] = useState('');
   const [reqDesc, setReqDesc] = useState('');
   const [amount, setAmount] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const { loading, setLoading } = useContext(LoadingContext);
   const [approved, setApproved] = useState([]);
   const [balanceState, setBalanceState] = useState(balance);
 
@@ -274,9 +275,9 @@ export default function RequestsSection({ manager, address, balance, backers,req
               value={receiver}
               onChange={handleReceiver}
             />
-            <Button variant='contained' type='submit' color='primary'>
+            <TransactionButton variant='contained' type='submit' color='primary'>
               Create Request
-            </Button>
+            </TransactionButton>
           </Box>
         </Card>
       </form>
@@ -338,7 +339,7 @@ export default function RequestsSection({ manager, address, balance, backers,req
                 {isContributor&&<TransactionButton data-idx={idx} color='primary' variant='contained' onClick={handleApprove} disabled={loading||approved[idx]||request[3]}>
                   Approve
                 </TransactionButton>}
-                {isAdmin&&<TransactionButton data-idx={idx} color='primary' variant='contained' onClick={handleFinalise} style={{ marginLeft: 'auto' }} disabled={loading||request[3]}>
+                {isAdmin&&<TransactionButton data-idx={idx} color='primary' variant='contained' onClick={handleFinalise} style={{ marginLeft: 'auto' }} disabled={loading||request[3]||request[1]>balanceState||request[4]<=backers/2}>
                   Finalise
                 </TransactionButton>}
               </CardActions>

@@ -9,11 +9,13 @@ import UserContext from '../contexts/user/user.context';
 import web3 from '../utils/web3';
 import WrongChainAlert from '../components/WrongChainAlert';
 import correctChain from '../utils/correctChain';
+import LoadingContext from '../contexts/loading/loading.context';
 
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(null);
   const [isCorrectChain, setIsCorrectChain] = useState(true);
 
   if(typeof ethereum !== 'undefined')
@@ -47,9 +49,11 @@ export default function MyApp(props) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <UserContext.Provider value={{user,setUser}}>
+        <LoadingContext.Provider value={{loading,setLoading}}>
         <Navbar/>
         <Component {...pageProps} />
         {!isCorrectChain&&<WrongChainAlert/>}
+        </LoadingContext.Provider>
         </UserContext.Provider>
       </ThemeProvider>
     </React.Fragment>
