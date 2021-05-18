@@ -70,18 +70,15 @@ const useStyles = makeStyles(theme => ({
   heading: {
     margin: '3rem auto 5rem auto',
     width:"fit-content",
+    textAlign: "center"
   },
   nameHeading:{
-    //background: "linear-gradient(135deg, rgba(125, 213, 111, 0.9), rgba(40, 180, 135, 0.9))",
     color: theme.palette.primary.main,
-    // padding:"1rem",
-    // margin:"1rem",
-    // boxDecorationBreak: "clone",
-    // transform: "skewX(-12deg)"
+    textAlign: "center"
   },
   by: {
     display: 'block',
-    textAlign:"left"
+    textAlign:"center"
   },
   icon:{ 
     padding: 2,
