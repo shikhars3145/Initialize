@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
         textTransform: "uppercase"
     },
     arrow:{
-        marginTop:"2rem",
+        marginTop:"4rem",
         cursor:"pointer",
         '&:hover':{
             transform:"translateY(10px) scale(1.05)",
